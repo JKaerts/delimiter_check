@@ -15,6 +15,7 @@ delimiter_dictionary = {r'(': r')',
 opening_delimiters = delimiter_dictionary.keys()
 delimiter_stack: Deque[Match] = deque()
 
+# Flatten the dictionary to get a list of all delimiters
 all_delimiters = [item for sublist in delimiter_dictionary.items() for item in sublist]
 all_delimiters_regex = [re.escape(delimiter) for delimiter in all_delimiters]
 
@@ -45,8 +46,7 @@ def get_new_matches(line_number: int, line_text: str) -> Deque[Match]:
     matches = re.findall("|".join(all_delimiters_regex), line_text)
     if matches:
         return deque([(match, line_number) for match in matches])
-    else:
-        return deque()
+    return deque()
 
 
 if __name__ == "__main__":
@@ -61,8 +61,8 @@ if __name__ == "__main__":
             if opt in ("-i", "--infile"):
                 InputFile = arg
             else:
-               print("Incorrect usage.")
-               print("python DelimiterCheck.py -i <inputfile>") 
+                print("Incorrect usage.")
+                print("python DelimiterCheck.py -i <inputfile>")
 
     # Exit if no input file is provided
     if InputFile == '':
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     for match in delimiter_stack:
         if match[0] in opening_delimiters:
             print("Unclosed opening delimiter " +
-                  match[0] + 
+                  match[0] +
                   " at line " +
                   str(match[1]))
         else:
