@@ -1,4 +1,5 @@
 # DelimiterCheck
+![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg 'License')
 
 This short script arose from a need to check my LaTeX-files for consistent parentheses, brackets and braces.
 Since a typesetting engine should allow for prose with unbalanced delimiters, you should check everything manually or let your editor handle it.
