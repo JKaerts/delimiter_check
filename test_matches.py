@@ -1,6 +1,6 @@
 import unittest
 from collections import deque
-from Matches import Match, DelimiterStack
+from Matches import DelimiterStack
 
 class TestDelimiterStack(unittest.TestCase):
     def test_is_empty(self):
