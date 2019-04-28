@@ -21,14 +21,14 @@ import getopt
 import re
 from collections import deque
 from typing import NamedTuple, Deque
-from Matches import Match
+from Matches import Match, DelimiterStack
 
 
 delimiter_dictionary = {r'(': r')',
                         r'{': r'}',
                         r'[': r']'}
 opening_delimiters = delimiter_dictionary.keys()
-delimiter_stack: Deque[Match] = deque()
+delimiter_stack: DelimiterStack = DelimiterStack()
 
 # Flatten the dictionary to get a list of all delimiters
 all_delimiters = [item for sublist in delimiter_dictionary.items() for item in sublist]
@@ -43,24 +43,24 @@ def is_empty(test_deque: Deque) -> bool:
         return False
 
 
-def append_to_stack(original: Deque[Match], new: Deque[Match]) -> None:
+def append_to_stack(original: DelimiterStack, new: DelimiterStack) -> None:
     while True:
         try:
-            new_item = new.popleft()
-            if ((not is_empty(original)) and
-                    (original[-1][0] in opening_delimiters) and
-                    (delimiter_dictionary[original[-1][0]] == new_item[0])):
-                original.pop()
+            new_item = new.stack.popleft()
+            if ((not original.is_empty()) and
+                    (original.stack[-1][0] in opening_delimiters) and
+                    (delimiter_dictionary[original.stack[-1][0]] == new_item[0])):
+                original.stack.pop()
             else:
-                original.append(new_item)
+                original.stack.append(new_item)
         except IndexError:
             break
 
 
-def get_new_matches(line_number: int, line_text: str) -> Deque[Match]:
+def get_new_matches(line_number: int, line_text: str) -> DelimiterStack:
     matches = re.findall("|".join(all_delimiters_regex), line_text)
     if matches:
-        return deque([(match, line_number) for match in matches])
+        return DelimiterStack([(match, line_number) for match in matches])
     return deque()
 
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             new_matches = get_new_matches(i+1, line)
             append_to_stack(delimiter_stack, new_matches)
 
-    for match in delimiter_stack:
+    for match in delimiter_stack.stack:
         if match[0] in opening_delimiters:
             print("Unclosed opening delimiter " +
                   match[0] +
