@@ -34,15 +34,6 @@ delimiter_stack: DelimiterStack = DelimiterStack()
 all_delimiters = [item for sublist in delimiter_dictionary.items() for item in sublist]
 all_delimiters_regex = [re.escape(delimiter) for delimiter in all_delimiters]
 
-def is_empty(test_deque: Deque) -> bool:
-    try:
-        a = test_deque[0]
-    except IndexError:
-        return True
-    else:
-        return False
-
-
 def append_to_stack(original: DelimiterStack, new: DelimiterStack) -> None:
     while True:
         try:
@@ -61,7 +52,7 @@ def get_new_matches(line_number: int, line_text: str) -> DelimiterStack:
     matches = re.findall("|".join(all_delimiters_regex), line_text)
     if matches:
         return DelimiterStack([(match, line_number) for match in matches])
-    return deque()
+    return DelimiterStack()
 
 
 if __name__ == "__main__":
