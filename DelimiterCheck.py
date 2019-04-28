@@ -21,10 +21,7 @@ import getopt
 import re
 from collections import deque
 from typing import NamedTuple, Deque
-
-class Match(NamedTuple):
-    delimiter: str
-    line: int
+from Matches import Match
 
 
 delimiter_dictionary = {r'(': r')',
