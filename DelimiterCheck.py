@@ -19,8 +19,6 @@
 import sys
 import getopt
 import re
-from collections import deque
-from typing import NamedTuple, Deque
 from Matches import Match, DelimiterStack
 
 
