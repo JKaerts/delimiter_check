@@ -23,9 +23,4 @@ class DelimiterStack:
         return self._stack
             
     def is_empty(self):
-        try:
-            a = self._stack[0]
-        except IndexError:
-            return True
-        else:
-            return False
+        return not bool(self.stack)
