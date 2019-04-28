@@ -19,7 +19,7 @@
 import sys
 import getopt
 import re
-from Matches import Match, DelimiterStack
+from Matches import DelimiterStack
 
 
 delimiter_dictionary = {r'(': r')',
