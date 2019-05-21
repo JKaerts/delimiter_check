@@ -74,7 +74,7 @@ if __name__ == "__main__":
         print("No input file has been provided.")
         sys.exit()
 
-    with open('Chapter1.tex') as infile:
+    with open(InputFile) as infile:
         for i, line in enumerate(infile):
             new_matches = get_new_matches(i+1, line)
             append_other_stack(delimiter_stack, new_matches)
