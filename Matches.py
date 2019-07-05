@@ -18,5 +18,11 @@ class DelimiterStack:
     def stack(self):
         return self._stack
 
+    def popleft(self):
+        return self.stack.popleft()
+
+    def pop(self):
+        return self.stack.pop()
+
     def is_empty(self):
         return not bool(self.stack)
