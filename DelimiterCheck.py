@@ -36,11 +36,11 @@ all_delimiters_regex = [re.escape(delimiter) for delimiter in all_delimiters]
 def append_other_stack(original: DelimiterStack, new: DelimiterStack) -> None:
     while True:
         try:
-            new_item = new.stack.popleft()
+            new_item = new.popleft()
             if ((not original.is_empty()) and
                     (original.stack[-1][0] in opening_delimiters) and
                     (delimiter_dictionary[original.stack[-1][0]] == new_item[0])):
-                original.stack.pop()
+                original.pop()
             else:
                 original.stack.append(new_item)
         except IndexError:
