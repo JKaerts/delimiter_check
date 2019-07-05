@@ -42,7 +42,7 @@ def append_other_deque(original: DelimiterDeque, new: DelimiterDeque) -> None:
                     (delimiter_dictionary[original.deque[-1][0]] == new_item[0])):
                 original.popright()
             else:
-                original.deque.append(new_item)
+                original.appendright(new_item)
         except IndexError:
             break
 

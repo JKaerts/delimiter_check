@@ -18,6 +18,12 @@ class DelimiterDeque:
     def deque(self):
         return self._deque
 
+    def appendleft(self, new_match: Match):
+        self.deque.appendleft(new_match)
+
+    def appendright(self, new_match: Match):
+        self.deque.append(new_match)
+
     def popleft(self):
         return self.deque.popleft()
 
