@@ -1,14 +1,8 @@
 from collections import deque
-from typing import NamedTuple, Deque
+from typing import Tuple, Deque
 
 
-class Match(NamedTuple):
-    """
-    Container class which keeps a pair of a delimiter and the line number
-    on which it was found
-    """
-    delimiter: str
-    line: int
+Match = Tuple[str, int]
 
 
 class DelimiterStack:
