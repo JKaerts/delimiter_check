@@ -21,7 +21,7 @@ class DelimiterStack:
     def popleft(self):
         return self.stack.popleft()
 
-    def pop(self):
+    def popright(self):
         return self.stack.pop()
 
     def is_empty(self):

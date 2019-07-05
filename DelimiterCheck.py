@@ -40,7 +40,7 @@ def append_other_stack(original: DelimiterStack, new: DelimiterStack) -> None:
             if ((not original.is_empty()) and
                     (original.stack[-1][0] in opening_delimiters) and
                     (delimiter_dictionary[original.stack[-1][0]] == new_item[0])):
-                original.pop()
+                original.popright()
             else:
                 original.stack.append(new_item)
         except IndexError:
