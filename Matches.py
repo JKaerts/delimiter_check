@@ -32,3 +32,9 @@ class DelimiterDeque:
 
     def is_empty(self):
         return not bool(self.deque)
+
+    def __iter__(self):
+        return iter(self.deque)
+
+    def __next__(self):
+        return next(self.deque)

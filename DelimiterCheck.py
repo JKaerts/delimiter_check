@@ -79,7 +79,7 @@ if __name__ == "__main__":
             new_matches = get_new_matches(i+1, line)
             append_other_deque(delimiter_deque, new_matches)
 
-    for match in delimiter_deque.deque:
+    for match in delimiter_deque:
         if match[0] in opening_delimiters:
             print("Unclosed opening delimiter " +
                   match[0] +
