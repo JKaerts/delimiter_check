@@ -5,24 +5,24 @@ from typing import Tuple, Deque
 Match = Tuple[str, int]
 
 
-class DelimiterStack:
-    _stack: Deque[Match]
+class DelimiterDeque:
+    _deque: Deque[Match]
 
     def __init__(self, match_list=None):
         if match_list is None:
-            self._stack = deque()
+            self._deque = deque()
         else:
-            self._stack = deque(match_list)
+            self._deque = deque(match_list)
 
     @property
-    def stack(self):
-        return self._stack
+    def deque(self):
+        return self._deque
 
     def popleft(self):
-        return self.stack.popleft()
+        return self.deque.popleft()
 
     def popright(self):
-        return self.stack.pop()
+        return self.deque.pop()
 
     def is_empty(self):
-        return not bool(self.stack)
+        return not bool(self.deque)

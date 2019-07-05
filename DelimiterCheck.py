@@ -19,39 +19,39 @@
 import sys
 import getopt
 import re
-from Matches import DelimiterStack
+from Matches import DelimiterDeque
 
 
 delimiter_dictionary = {r'(': r')',
                         r'{': r'}',
                         r'[': r']'}
 opening_delimiters = delimiter_dictionary.keys()
-delimiter_stack: DelimiterStack = DelimiterStack()
+delimiter_deque: DelimiterDeque = DelimiterDeque()
 
 # Flatten the dictionary to get a list of all delimiters
 all_delimiters = [item for sublist in delimiter_dictionary.items() for item in sublist]
 all_delimiters_regex = [re.escape(delimiter) for delimiter in all_delimiters]
 
 
-def append_other_stack(original: DelimiterStack, new: DelimiterStack) -> None:
+def append_other_deque(original: DelimiterDeque, new: DelimiterDeque) -> None:
     while True:
         try:
             new_item = new.popleft()
             if ((not original.is_empty()) and
-                    (original.stack[-1][0] in opening_delimiters) and
-                    (delimiter_dictionary[original.stack[-1][0]] == new_item[0])):
+                    (original.deque[-1][0] in opening_delimiters) and
+                    (delimiter_dictionary[original.deque[-1][0]] == new_item[0])):
                 original.popright()
             else:
-                original.stack.append(new_item)
+                original.deque.append(new_item)
         except IndexError:
             break
 
 
-def get_new_matches(line_number: int, line_text: str) -> DelimiterStack:
+def get_new_matches(line_number: int, line_text: str) -> DelimiterDeque:
     matches = re.findall("|".join(all_delimiters_regex), line_text)
     if matches:
-        return DelimiterStack([(match, line_number) for match in matches])
-    return DelimiterStack()
+        return DelimiterDeque([(match, line_number) for match in matches])
+    return DelimiterDeque()
 
 
 if __name__ == "__main__":
@@ -77,9 +77,9 @@ if __name__ == "__main__":
     with open(InputFile) as infile:
         for i, line in enumerate(infile):
             new_matches = get_new_matches(i+1, line)
-            append_other_stack(delimiter_stack, new_matches)
+            append_other_deque(delimiter_deque, new_matches)
 
-    for match in delimiter_stack.stack:
+    for match in delimiter_deque.deque:
         if match[0] in opening_delimiters:
             print("Unclosed opening delimiter " +
                   match[0] +
