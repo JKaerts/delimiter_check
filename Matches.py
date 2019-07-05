@@ -5,7 +5,7 @@ from typing import Tuple, Deque
 Match = Tuple[str, int]
 
 
-class DelimiterDeque:
+class MatchDeque:
     _deque: Deque[Match]
 
     def __init__(self, match_list=None):

@@ -19,21 +19,21 @@
 import sys
 import getopt
 import re
-from Matches import DelimiterDeque
+from Matches import MatchDeque
 
 
 delimiter_dictionary = {r'(': r')',
                         r'{': r'}',
                         r'[': r']'}
 opening_delimiters = delimiter_dictionary.keys()
-delimiter_deque: DelimiterDeque = DelimiterDeque()
+delimiter_deque: MatchDeque = MatchDeque()
 
 # Flatten the dictionary to get a list of all delimiters
 all_delimiters = [item for sublist in delimiter_dictionary.items() for item in sublist]
 all_delimiters_regex = [re.escape(delimiter) for delimiter in all_delimiters]
 
 
-def append_other_deque(original: DelimiterDeque, new: DelimiterDeque) -> None:
+def append_other_deque(original: MatchDeque, new: MatchDeque) -> None:
     while True:
         try:
             new_item = new.popleft()
@@ -47,11 +47,11 @@ def append_other_deque(original: DelimiterDeque, new: DelimiterDeque) -> None:
             break
 
 
-def get_new_matches(line_number: int, line_text: str) -> DelimiterDeque:
+def get_new_matches(line_number: int, line_text: str) -> MatchDeque:
     matches = re.findall("|".join(all_delimiters_regex), line_text)
     if matches:
-        return DelimiterDeque([(match, line_number) for match in matches])
-    return DelimiterDeque()
+        return MatchDeque([(match, line_number) for match in matches])
+    return MatchDeque()
 
 
 if __name__ == "__main__":
