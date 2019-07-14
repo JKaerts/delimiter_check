@@ -19,38 +19,24 @@
 import sys
 import getopt
 import re
-from Matches import MatchDeque
+from Matches import Match, MatchDeque, DelimiterPairing
 
 
-delimiter_dictionary = {r'(': r')',
-                        r'{': r'}',
-                        r'[': r']'}
-opening_delimiters = delimiter_dictionary.keys()
-delimiter_deque: MatchDeque = MatchDeque()
+delimiter_list = [(r'(', r')'),
+                  (r'{', r'}'),
+                  (r'[', r']')]
+
+delim_pairing = DelimiterPairing(delimiter_list)
+delimiter_deque: MatchDeque = MatchDeque(delim_table=delim_pairing)
 
 # Flatten the dictionary to get a list of all delimiters
-all_delimiters = [item for sublist in delimiter_dictionary.items() for item in sublist]
-all_delimiters_regex = [re.escape(delimiter) for delimiter in all_delimiters]
-
-
-def append_other_deque(original: MatchDeque, new: MatchDeque) -> None:
-    while True:
-        try:
-            new_item = new.popleft()
-            if ((not original.is_empty()) and
-                    (original.deque[-1][0] in opening_delimiters) and
-                    (delimiter_dictionary[original.deque[-1][0]] == new_item[0])):
-                original.popright()
-            else:
-                original.appendright(new_item)
-        except IndexError:
-            break
+all_delimiters_regex = delim_pairing.all_delimiters_regex
 
 
 def get_new_matches(line_number: int, line_text: str) -> MatchDeque:
     matches = re.findall("|".join(all_delimiters_regex), line_text)
     if matches:
-        return MatchDeque([(match, line_number) for match in matches])
+        return MatchDeque(delim_pairing, [Match(match, line_number) for match in matches])
     return MatchDeque()
 
 
@@ -77,16 +63,6 @@ if __name__ == "__main__":
     with open(InputFile) as infile:
         for i, line in enumerate(infile):
             new_matches = get_new_matches(i+1, line)
-            append_other_deque(delimiter_deque, new_matches)
-
-    for match in delimiter_deque:
-        if match[0] in opening_delimiters:
-            print("Unclosed opening delimiter " +
-                  match[0] +
-                  " at line " +
-                  str(match[1]))
-        else:
-            print("Superfluous closing delimiter " +
-                  match[0] +
-                  " at line " +
-                  str(match[1]))
+            delimiter_deque.append_other_deque(new_matches)
+            
+    print(delimiter_deque.report())
