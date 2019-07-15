@@ -36,6 +36,15 @@ class DelimiterPairing:
     def all_delimiters_regex(self):
         return self._all_delimiters_regex
 
+    def are_compatible(self, first: str, second: str) -> bool:
+        ''' Checks if the arguments first and second form a valid pair
+            of delimiters.
+        '''
+        try:
+            return self._dict[first] == second
+        except KeyError:
+            return False
+
 
 @dataclass
 class Match:
