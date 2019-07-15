@@ -27,17 +27,10 @@ delimiter_list = [(r'(', r')'),
                   (r'[', r']')]
 
 delim_pairing = DelimiterPairing(delimiter_list)
-delimiter_deque: MatchDeque = MatchDeque(delim_table=delim_pairing)
+delimiter_deque: MatchDeque = MatchDeque.from_list(delimiter_list)
 
 # Flatten the dictionary to get a list of all delimiters
 all_delimiters_regex = delim_pairing.all_delimiters_regex
-
-
-def get_new_matches(line_number: int, line_text: str) -> MatchDeque:
-    matches = re.findall("|".join(all_delimiters_regex), line_text)
-    if matches:
-        return MatchDeque(delim_pairing, [Match(match, line_number) for match in matches])
-    return MatchDeque()
 
 
 if __name__ == "__main__":
@@ -62,7 +55,7 @@ if __name__ == "__main__":
 
     with open(InputFile) as infile:
         for i, line in enumerate(infile):
-            new_matches = get_new_matches(i+1, line)
+            new_matches = delimiter_deque.get_new_matches(i+1, line)
             delimiter_deque.append_other_deque(new_matches)
             
     print(delimiter_deque.report())
