@@ -26,11 +26,7 @@ delimiter_list = [(r'(', r')'),
                   (r'{', r'}'),
                   (r'[', r']')]
 
-delim_pairing = DelimiterPairing(delimiter_list)
 delimiter_deque: MatchDeque = MatchDeque.from_list(delimiter_list)
-
-# Flatten the dictionary to get a list of all delimiters
-all_delimiters_regex = delim_pairing.all_delimiters_regex
 
 
 if __name__ == "__main__":
