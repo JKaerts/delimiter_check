@@ -11,28 +11,28 @@ class DelimiterPairing:
         self._opening_delimiters = DelimiterPairing.gen_opening_delimiters(self._dict)
         self._all_delimiters = DelimiterPairing.gen_all_delimiters(self._dict)
         self._all_delimiters_regex = DelimiterPairing.gen_all_delimiters_regex(self._dict)
-        
+
     @staticmethod
     def gen_opening_delimiters(delim_dict):
         return delim_dict.keys()
-        
+
     @staticmethod
     def gen_all_delimiters(delim_dict):
         return [item for sublist in delim_dict.items() for item in sublist]
-        
+
     @staticmethod
     def gen_all_delimiters_regex(delim_dict):
         delimiters = DelimiterPairing.gen_all_delimiters(delim_dict)
         return [re.escape(delimiter) for delimiter in delimiters]
-        
+
     @property
     def opening_delimiters(self):
         return self._opening_delimiters
-        
+
     @property
     def all_delimiters(self):
         return self._all_delimiters
-        
+
     @property
     def all_delimiters_regex(self):
         return self._all_delimiters_regex
@@ -67,7 +67,7 @@ class MatchDeque:
         else:
             self._deque = deque(match_list)
         self._delim_table = delim_table
-        
+
     @classmethod
     def from_list(cls, delim_list, match_list=None):
         return MatchDeque(DelimiterPairing(delim_list), match_list)
@@ -75,7 +75,7 @@ class MatchDeque:
     @property
     def deque(self):
         return self._deque
-        
+
     @property
     def delim_table(self):
         return self._delim_table
@@ -120,7 +120,7 @@ class MatchDeque:
     def popleft(self):
         ''' Removes and returns the leftmost element of the deque.
 
-            >>> matches = MatchDeque.from_list([('(', ')'), ('[', ']'), ('{', '}')], 
+            >>> matches = MatchDeque.from_list([('(', ')'), ('[', ']'), ('{', '}')],
             ...                                [Match('{', 1), Match('[', 5)])
             >>> result = matches.popleft()
             >>> result
@@ -161,12 +161,12 @@ class MatchDeque:
         matches = re.findall("|".join(regex), line_text)
         if matches:
             return MatchDeque(self.delim_table, [Match(match, line_number) for match in matches])
-        return MatchDeque()
-        
+        return MatchDeque(self.delim_table)
+
     def append_other_deque(self, other):
         for new_item in other:
             self.appendright(new_item)
-                
+
     def report(self):
         report_str = ""
         for match in self.deque:

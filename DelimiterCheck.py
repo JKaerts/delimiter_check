@@ -51,5 +51,5 @@ if __name__ == "__main__":
         for i, line in enumerate(infile):
             new_matches = delimiter_deque.get_new_matches(i+1, line)
             delimiter_deque.append_other_deque(new_matches)
-            
+
     print(delimiter_deque.report())
