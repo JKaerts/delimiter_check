@@ -56,6 +56,12 @@ class Match:
     delim: str
     line: int
 
+    def report(self, opening: bool):
+        if opening:
+            return f"Unclosed opening delimiter {self.delim} at line {self.line}"
+        else:
+            return f"Superfluous closing delimiter {self.delim} at line {self.line}"
+
 
 class MatchDeque:
     _deque: Deque[Match]
@@ -168,13 +174,8 @@ class MatchDeque:
             self.appendright(new_item)
 
     def report(self):
-        report_str = ""
-        for match in self.deque:
-            if match.delim in self.delim_table.opening_delimiters:
-                report_str += f"Unclosed opening delimiter {match.delim} at line {match.line}\n"
-            else:
-                report_str += f"Superfluous closing delimiter {match.delim} at line {match.line}\n"
-        return report_str
+        report_strings = [match.report(match.delim in self.delim_table.opening_delimiters) for match in self.deque]
+        return '\n'.join(report_strings)
 
     def __iter__(self):
         return iter(self.deque)
