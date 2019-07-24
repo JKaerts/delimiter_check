@@ -33,8 +33,9 @@ def main():
     input_file = args.input_file
 
     with open(input_file) if input_file is not None else sys.stdin as infile:
-        for i, line in enumerate(infile):
-            new_matches = delimiter_deque.get_new_matches(i+1, line)
+        # line numbers start at 1, not at zero
+        for i, line in enumerate(infile, 1):
+            new_matches = delimiter_deque.get_new_matches(i, line)
             delimiter_deque.append_other_deque(new_matches)
 
     print(delimiter_deque.report())
