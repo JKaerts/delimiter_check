@@ -28,7 +28,7 @@ This script helps with that task.
 In a command line, simply enter
 
 ```
-python DelimiterCheck.py -i textfile.txt
+python delimiter_check.py -i textfile.txt
 ```
 
 Supposing the text file contained
@@ -73,14 +73,14 @@ You can also define your own macro's for intervals etc.
 It is possible to add your own set of delimiters to the program.
 To do so you need to edit the code in one place.
 Suppose I want the script to also check if every `\langle` has a matching `\rangle`.
-To this end I need to add them to `delimiter_list` (which matches opening delimiters to their closing counterpart).
+To this end I need to add them to `DEFAULT_DELIMITERS` (which matches opening delimiters to their closing counterpart).
 It will now look like this:
 
 ```
-delimiter_list = [(r'(', r')'),
-                  (r'{', r'}'),
-                  (r'[', r']'),
-                  (r'\langle', r'\rangle')]
+DEFAULT_DELIMITERS = [(r'(', r')'),
+                      (r'{', r'}'),
+                      (r'[', r']'),
+					  (r'\langle', r'\rangle')]
 
 ```
 
