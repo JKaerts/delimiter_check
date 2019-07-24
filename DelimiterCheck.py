@@ -18,19 +18,17 @@
 
 import sys
 import getopt
-import re
-from Matches import Match, MatchDeque, DelimiterPairing
+from Matches import MatchDeque
 
 
-delimiter_list = [(r'(', r')'),
-                  (r'{', r'}'),
-                  (r'[', r']')]
-
-delimiter_deque: MatchDeque = MatchDeque.from_list(delimiter_list)
+DEFAULT_DELIMITERS = [(r'(', r')'),
+                      (r'{', r'}'),
+                      (r'[', r']')]
 
 
-if __name__ == "__main__":
-    InputFile = None
+def main():
+    delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
+    input_file = None
     try:
         opts, args = getopt.getopt(sys.argv[1:], "i:", ["infile="])
     except getopt.GetoptError:
@@ -40,16 +38,19 @@ if __name__ == "__main__":
     else:
         for opt, arg in opts:
             if opt in ("-i", "--infile"):
-                InputFile = arg
+                input_file = arg
 
     # Exit if no input file is provided
-    if InputFile == '':
+    if input_file == '':
         print("No input file has been provided.")
         sys.exit()
 
-    with open(InputFile) if InputFile is not None else sys.stdin as infile:
+    with open(input_file) if input_file is not None else sys.stdin as infile:
         for i, line in enumerate(infile):
             new_matches = delimiter_deque.get_new_matches(i+1, line)
             delimiter_deque.append_other_deque(new_matches)
 
     print(delimiter_deque.report())
+
+if __name__ == "__main__":
+    main()
