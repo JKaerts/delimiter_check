@@ -18,6 +18,7 @@
 
 import sys
 import getopt
+from argument_parser import parse_args
 from Matches import MatchDeque
 
 
@@ -28,22 +29,8 @@ DEFAULT_DELIMITERS = [(r'(', r')'),
 
 def main():
     delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
-    input_file = None
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "i:", ["infile="])
-    except getopt.GetoptError:
-        print("Incorrect usage.")
-        print("python DelimiterCheck.py -i <inputfile>")
-        sys.exit(2)
-    else:
-        for opt, arg in opts:
-            if opt in ("-i", "--infile"):
-                input_file = arg
-
-    # Exit if no input file is provided
-    if input_file == '':
-        print("No input file has been provided.")
-        sys.exit()
+    args = parse_args()
+    input_file = args.input_file
 
     with open(input_file) if input_file is not None else sys.stdin as infile:
         for i, line in enumerate(infile):
