@@ -17,7 +17,7 @@ def parse_args(module, args=sys.argv[1:]):
     parser.add_argument("-i",
                         metavar="INPUT",
                         dest='input_file',
-                        help="The input file")
+                        help="the input file. Defaults to stdin if not given.")
 
     return parser.parse_args(args)
 

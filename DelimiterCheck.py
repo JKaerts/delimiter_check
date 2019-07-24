@@ -1,5 +1,6 @@
 """
-    DelimiterCheck - A program to chech for delimiter consistency
+    DelimiterCheck - A program to check for delimiter consistency
+    in text files.
     Copyright (C) 2018  Jonas Kaerts
 
     This program is free software: you can redistribute it and/or modify
