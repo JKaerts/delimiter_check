@@ -17,7 +17,6 @@
 """
 
 import sys
-import getopt
 from argument_parser import parse_args
 from Matches import MatchDeque
 
@@ -28,8 +27,9 @@ DEFAULT_DELIMITERS = [(r'(', r')'),
 
 
 def main():
+    """Main function"""
     delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
-    args = parse_args()
+    args = parse_args(__name__)
     input_file = args.input_file
 
     with open(input_file) if input_file is not None else sys.stdin as infile:
