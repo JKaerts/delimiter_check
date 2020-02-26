@@ -30,10 +30,10 @@ class CustomFormatter(argparse.RawDescriptionHelpFormatter,
                       argparse.ArgumentDefaultsHelpFormatter):
     pass
 
-def parse_args(module, args=sys.argv[1:]):
+def parse_args(args=sys.argv[1:]):
     """Parse arguments"""
     parser = argparse.ArgumentParser(
-        description=sys.modules[module].__doc__,
+        description=sys.modules[__name__].__doc__,
         formatter_class=CustomFormatter)
     parser.add_argument("-i",
                         metavar="INPUT",
@@ -44,7 +44,7 @@ def parse_args(module, args=sys.argv[1:]):
 
 if __name__ == "__main__":
     delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
-    args = parse_args(__name__)
+    args = parse_args()
     input_file = args.input_file
 
     with open(input_file) if input_file is not None else sys.stdin as infile:
