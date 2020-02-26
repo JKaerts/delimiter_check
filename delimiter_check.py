@@ -19,7 +19,6 @@
 
 import argparse
 import sys
-from argument_parser import parse_args
 from Matches import MatchDeque
 
 
@@ -27,9 +26,23 @@ DEFAULT_DELIMITERS = [(r'(', r')'),
                       (r'{', r'}'),
                       (r'[', r']')]
 
+class CustomFormatter(argparse.RawDescriptionHelpFormatter,
+                      argparse.ArgumentDefaultsHelpFormatter):
+    pass
 
-def main():
-    """Main function"""
+def parse_args(module, args=sys.argv[1:]):
+    """Parse arguments"""
+    parser = argparse.ArgumentParser(
+        description=sys.modules[module].__doc__,
+        formatter_class=CustomFormatter)
+    parser.add_argument("-i",
+                        metavar="INPUT",
+                        dest='input_file',
+                        help="the input file. Defaults to stdin if not given.")
+
+    return parser.parse_args(args)
+
+if __name__ == "__main__":
     delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
     args = parse_args(__name__)
     input_file = args.input_file
@@ -41,6 +54,3 @@ def main():
             delimiter_deque.append_other_deque(new_matches)
 
     print(delimiter_deque.report())
-
-if __name__ == "__main__":
-    main()
