@@ -18,13 +18,19 @@
 """
 
 import argparse
+import re
 import sys
 from Matches import MatchDeque
+from collections import deque
 
 
 DEFAULT_DELIMITERS = [(r'(', r')'),
                       (r'{', r'}'),
                       (r'[', r']')]
+
+LEFT_DELIMITERS, RIGHT_DELIMITERS = zip(*DEFAULT_DELIMITERS)
+ALL_DELIMITERS = LEFT_DELIMITERS + RIGHT_DELIMITERS
+DELIMITER_REGEX = [re.escape(delimiter) for delimiter in ALL_DELIMITERS]
 
 class CustomFormatter(argparse.RawDescriptionHelpFormatter,
                       argparse.ArgumentDefaultsHelpFormatter):
@@ -42,10 +48,39 @@ def parse_args(args=sys.argv[1:]):
 
     return parser.parse_args(args)
 
+def get_matches_from_line(linenumber, line):
+    matches = re.findall("|".join(DELIMITER_REGEX), line)
+    if matches:
+        return deque([(match, linenumber) for match in matches])
+
+def delimiters_match(left, right):
+    try:
+        index = LEFT_DELIMITERS.index(left)
+    except ValueError:
+        return False
+    else:
+        return right == RIGHT_DELIMITERS[index]
+
 if __name__ == "__main__":
+    my_deque = deque()
     delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
     args = parse_args()
     input_file = args.input_file
+
+    with open(input_file) if input_file is not None else sys.stdin as infile:
+        for i, line in enumerate(infile, 1):
+            new_matches = get_matches_from_line(i, line)
+            for match in new_matches:
+                if len(my_deque) != 0 and delimiters_match(my_deque[-1], match):
+                    my_deque.pop()
+                else:
+                    my_deque.append(match)
+
+    for match in my_deque:
+        if match[0] in LEFT_DELIMITERS:
+            print(f"Unclosed opening delimiter {self.delim} at line {self.line}")
+        else:
+            print(f"Superfluous closing delimiter {self.delim} at line {self.line}")
 
     with open(input_file) if input_file is not None else sys.stdin as infile:
         # line numbers start at 1, not at zero
