@@ -20,9 +20,7 @@
 import argparse
 import re
 import sys
-from Matches import MatchDeque
 from collections import deque
-
 
 DEFAULT_DELIMITERS = [(r'(', r')'),
                       (r'{', r'}'),
@@ -34,6 +32,9 @@ DELIMITER_REGEX = [re.escape(delimiter) for delimiter in ALL_DELIMITERS]
 
 class CustomFormatter(argparse.RawDescriptionHelpFormatter,
                       argparse.ArgumentDefaultsHelpFormatter):
+    """
+    Formatter for the command line arguments
+    """
     pass
 
 def parse_args(args=sys.argv[1:]):
@@ -52,6 +53,7 @@ def get_matches_from_line(linenumber, line):
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
         return deque([(match, linenumber) for match in matches])
+    return deque()
 
 def delimiters_match(left, right):
     try:
@@ -63,29 +65,21 @@ def delimiters_match(left, right):
 
 if __name__ == "__main__":
     my_deque = deque()
-    delimiter_deque: MatchDeque = MatchDeque.from_list(DEFAULT_DELIMITERS)
     args = parse_args()
     input_file = args.input_file
 
     with open(input_file) if input_file is not None else sys.stdin as infile:
+        # line numbers start at 1, not at zero
         for i, line in enumerate(infile, 1):
             new_matches = get_matches_from_line(i, line)
             for match in new_matches:
-                if len(my_deque) != 0 and delimiters_match(my_deque[-1], match):
+                if len(my_deque) != 0 and delimiters_match(my_deque[-1][0], match[0]):
                     my_deque.pop()
                 else:
                     my_deque.append(match)
 
     for match in my_deque:
         if match[0] in LEFT_DELIMITERS:
-            print(f"Unclosed opening delimiter {self.delim} at line {self.line}")
+            print("Unclosed opening delimiter {} at line {}".format(match[0], match[1]))
         else:
-            print(f"Superfluous closing delimiter {self.delim} at line {self.line}")
-
-    with open(input_file) if input_file is not None else sys.stdin as infile:
-        # line numbers start at 1, not at zero
-        for i, line in enumerate(infile, 1):
-            new_matches = delimiter_deque.get_new_matches(i, line)
-            delimiter_deque.append_other_deque(new_matches)
-
-    print(delimiter_deque.report())
+            print("Superfluous closing delimiter {} at line {}".format(match[0], match[1]))
