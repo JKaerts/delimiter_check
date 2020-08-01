@@ -20,7 +20,6 @@
 import argparse
 import re
 import sys
-from collections import deque
 
 DEFAULT_DELIMITERS = [(r'(', r')'),
                       (r'{', r'}'),
@@ -53,7 +52,7 @@ def get_matches_from_line(linenumber, line):
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
         return [(match, linenumber) for match in matches]
-    return deque()
+    return []
 
 def delimiters_match(left, right):
     try:
@@ -67,7 +66,7 @@ def matches_top_of_stack(delimiter, stack):
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 if __name__ == "__main__":
-    my_deque = deque()
+    my_deque = []
     args = parse_args()
     input_file = args.input_file
 
