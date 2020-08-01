@@ -48,10 +48,10 @@ def parse_args(args=sys.argv[1:]):
 
     return parser.parse_args(args)
 
-def get_matches_from_line(linenumber, line):
+def get_matches_from_line(number, line):
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
-        return [(match, linenumber) for match in matches]
+        return [(match, number) for match in matches]
     return []
 
 def delimiters_match(left, right):
