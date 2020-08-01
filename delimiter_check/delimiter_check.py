@@ -20,6 +20,7 @@
 import argparse
 import re
 import sys
+from typing import List, Tuple
 
 DEFAULT_DELIMITERS = [('(', ')'),
                       ('{', '}'),
@@ -28,6 +29,8 @@ DEFAULT_DELIMITERS = [('(', ')'),
 LEFT_DELIMITERS, RIGHT_DELIMITERS = zip(*DEFAULT_DELIMITERS)
 ALL_DELIMITERS = LEFT_DELIMITERS + RIGHT_DELIMITERS
 DELIMITER_REGEX = [re.escape(delimiter) for delimiter in ALL_DELIMITERS]
+
+Match = Tuple[str, int]
 
 
 class CustomFormatter(argparse.RawDescriptionHelpFormatter,
@@ -51,14 +54,14 @@ def parse_args(args=sys.argv[1:]):
     return parser.parse_args(args)
 
 
-def get_matches_from_line(number, line):
+def get_matches_from_line(number: int, line: str) -> List[Match]:
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
         return [(match, number) for match in matches]
     return []
 
 
-def delimiters_match(left, right):
+def delimiters_match(left: str, right: str) -> bool:
     try:
         index = LEFT_DELIMITERS.index(left)
     except ValueError:
@@ -67,12 +70,12 @@ def delimiters_match(left, right):
         return right == RIGHT_DELIMITERS[index]
 
 
-def matches_top_of_stack(delimiter, stack):
+def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 
 if __name__ == "__main__":
-    delimiters = []
+    delimiters = []  # type: List[Match]
     args = parse_args()
     input_file = args.input_file
 
