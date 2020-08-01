@@ -63,6 +63,9 @@ def delimiters_match(left, right):
     else:
         return right == RIGHT_DELIMITERS[index]
 
+def matches_top_of_stack(delimiter, stack):
+    return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
+
 if __name__ == "__main__":
     my_deque = deque()
     args = parse_args()
@@ -73,7 +76,7 @@ if __name__ == "__main__":
         for i, line in enumerate(infile, 1):
             new_matches = get_matches_from_line(i, line)
             for match in new_matches:
-                if len(my_deque) != 0 and delimiters_match(my_deque[-1][0], match[0]):
+                if matches_top_of_stack(match[0], my_deque):
                     my_deque.pop()
                 else:
                     my_deque.append(match)
