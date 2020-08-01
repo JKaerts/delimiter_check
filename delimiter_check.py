@@ -66,7 +66,7 @@ def matches_top_of_stack(delimiter, stack):
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 if __name__ == "__main__":
-    my_deque = []
+    delimiters = []
     args = parse_args()
     input_file = args.input_file
 
@@ -75,12 +75,12 @@ if __name__ == "__main__":
         for i, line in enumerate(infile, 1):
             new_matches = get_matches_from_line(i, line)
             for match in new_matches:
-                if matches_top_of_stack(match[0], my_deque):
-                    my_deque.pop()
+                if matches_top_of_stack(match[0], delimiters):
+                    delimiters.pop()
                 else:
-                    my_deque.append(match)
+                    delimiters.append(match)
 
-    for match in my_deque:
+    for match in delimiters:
         if match[0] in LEFT_DELIMITERS:
             print("Line {}: {} unclosed".format(match[1], match[0]))
         else:
