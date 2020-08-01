@@ -52,7 +52,7 @@ def parse_args(args=sys.argv[1:]):
 def get_matches_from_line(linenumber, line):
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
-        return deque([(match, linenumber) for match in matches])
+        return [(match, linenumber) for match in matches]
     return deque()
 
 def delimiters_match(left, right):
