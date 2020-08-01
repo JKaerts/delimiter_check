@@ -46,9 +46,9 @@ Supposing the text file contained
 you will get the following output.
 
 ```
-Unclosed opening delimiter [ at line 1
-Unclosed opening delimiter ( at line 6
-Superfluous closing delimiter ] at line 7
+Line 1: [ unclosed
+Line 6: ( unclosed
+Line 7: ] extra
 ```
 
 The script knows that the two curly braces on lines 3 and 4 cancel.

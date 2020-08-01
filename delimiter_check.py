@@ -80,6 +80,6 @@ if __name__ == "__main__":
 
     for match in my_deque:
         if match[0] in LEFT_DELIMITERS:
-            print("Unclosed opening delimiter {} at line {}".format(match[0], match[1]))
+            print("Line {}: {} unclosed".format(match[1], match[0]))
         else:
-            print("Superfluous closing delimiter {} at line {}".format(match[0], match[1]))
+            print("Line {}: {} extra".format(match[1], match[0]))
