@@ -1,4 +1,4 @@
-style_args = -v --max-line-length=100
+style_args = --verbose --max-line-length=100
 
 .PHONY: stylecheck
 stylecheck:
