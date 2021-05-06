@@ -1,21 +1,20 @@
-from delimiter_check import *
+"""Tests for the delimiter_check script"""
+from io import StringIO
 import unittest
 
+from delimiter_check import delimiters_match, \
+    get_matches_from_line, \
+    get_results_from_file, \
+    is_valid_delimiter, \
+    matches_top_of_stack
 
-class TestMatching(unittest.TestCase):
-    def test_parentheses_match(self):
-        self.assertTrue(delimiters_match(left='(', right=')'))
 
-    def test_braces_match(self):
-        self.assertTrue(delimiters_match(left='{', right='}'))
-
-    def test_brackets_match(self):
-        self.assertTrue(delimiters_match(left='[', right=']'))
-
-    def test_order_matters(self):
-        self.assertFalse(delimiters_match(left=')', right='('))
-        self.assertFalse(delimiters_match(left='}', right='{'))
-        self.assertFalse(delimiters_match(left=']', right='['))
+class TestReadingFile(unittest.TestCase):
+    def test_correct_results(self):
+        file = StringIO('[a\n(b\n{c\n}d\n)e\n(f\n]g')
+        self.assertEqual(
+            [('[', 1), ('(', 6), (']', 7)],
+            get_results_from_file(file))
 
 
 class TestLineParsing(unittest.TestCase):
@@ -27,7 +26,7 @@ class TestLineParsing(unittest.TestCase):
         found_matches = get_matches_from_line(number=0, line=line_text)
         found_delimiters, _ = zip(*found_matches)
 
-        self.assertTrue(all([delimiter in ALL_DELIMITERS for delimiter in found_delimiters]))
+        self.assertTrue(all(is_valid_delimiter(d) for d in found_delimiters))
 
     def test_finds_delimiters_in_order(self):
         line_text = "A (short) text [with {many} delimiters]"
@@ -42,7 +41,7 @@ class TestLineParsing(unittest.TestCase):
         found_matches = get_matches_from_line(number=4, line=line_text)
         _, found_linenumbers = zip(*found_matches)
 
-        self.assertTrue(all([number == 4 for number in found_linenumbers]))
+        self.assertTrue(all(number == 4 for number in found_linenumbers))
 
 
 class TestStackMatching(unittest.TestCase):
@@ -53,13 +52,17 @@ class TestStackMatching(unittest.TestCase):
         # A ']' has been found on line 1 and a '(' has been found on line 4
         current_matches = [(']', 1), ('(', 4)]
         new_delimiter = ')'
-        self.assertTrue(matches_top_of_stack(delimiter=new_delimiter, stack=current_matches))
+        self.assertTrue(matches_top_of_stack(
+            delimiter=new_delimiter,
+            stack=current_matches))
 
     def test_delimiters_must_have_right_order(self):
         # A '(' has been found on line 1 and a ']' has been found on line 4
         current_matches = [('(', 1), (']', 4)]
         new_delimiter = '['
-        self.assertFalse(matches_top_of_stack(delimiter=new_delimiter, stack=current_matches))
+        self.assertFalse(matches_top_of_stack(
+            delimiter=new_delimiter,
+            stack=current_matches))
 
 
 if __name__ == '__main__':

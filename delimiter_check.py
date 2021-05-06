@@ -1,20 +1,19 @@
-"""
-    delimiter_check - A program to check for delimiter consistency
-    in text files.
-    Copyright (C) 2018  Jonas Kaerts
+"""A program to check for delimiter consistency in text files.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+Copyright (C) 2018  Jonas Kaerts
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import re
@@ -31,6 +30,10 @@ DELIMITER_REGEX = [re.escape(delimiter) for delimiter in ALL_DELIMITERS]
 Match = Tuple[str, int]
 
 
+def is_valid_delimiter(delimiter: str) -> bool:
+    return delimiter in ALL_DELIMITERS
+
+
 def get_matches_from_line(number: int, line: str) -> List[Match]:
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
@@ -39,6 +42,16 @@ def get_matches_from_line(number: int, line: str) -> List[Match]:
 
 
 def delimiters_match(left: str, right: str) -> bool:
+    """
+    Check whether two delimiters match.
+    
+    >>> delimiters_match('[', ']')
+    True
+    >>> delimiters_match(']', '[')
+    False
+    >>> delimiters_match('[', '}')
+    False
+    """
     try:
         index = LEFT_DELIMITERS.index(left)
     except ValueError:
@@ -51,17 +64,16 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 
-def get_results_from_file(filename):
+def get_results_from_file(file):
     delimiters = []  # type: List[Match]
-    with open(filename) as infile:
-        # line numbers start at 1, not at zero
-        for i, line in enumerate(infile, 1):
-            new_matches = get_matches_from_line(i, line)
-            for match in new_matches:
-                if matches_top_of_stack(match[0], delimiters):
-                    delimiters.pop()
-                else:
-                    delimiters.append(match)
+    # line numbers start at 1, not at zero
+    for i, line in enumerate(file, 1):
+        new_matches = get_matches_from_line(i, line)
+        for match in new_matches:
+            if matches_top_of_stack(match[0], delimiters):
+                delimiters.pop()
+            else:
+                delimiters.append(match)
 
     return delimiters
 
@@ -80,8 +92,9 @@ def write_results(delimiters, outfile):
 
 def main(argv, stdout):
     input_file = argv[1]
-    delimiters = get_results_from_file(input_file)
-    write_results(delimiters, stdout)
+    with open(input_file) as infile:
+        delimiters = get_results_from_file(infile)
+        write_results(delimiters, stdout)
 
 
 if __name__ == "__main__":
