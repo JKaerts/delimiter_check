@@ -17,33 +17,6 @@ class TestReadingFile(unittest.TestCase):
             get_results_from_file(file))
 
 
-class TestLineParsing(unittest.TestCase):
-    def test_empty_line_returns_empty_list(self):
-        self.assertEqual([], get_matches_from_line(number=0, line=""))
-
-    def test_all_matches_are_delimiters(self):
-        line_text = "A (short) text [with {many} delimiters]"
-        found_matches = get_matches_from_line(number=0, line=line_text)
-        found_delimiters, _ = zip(*found_matches)
-
-        self.assertTrue(all(is_valid_delimiter(d) for d in found_delimiters))
-
-    def test_finds_delimiters_in_order(self):
-        line_text = "A (short) text [with {many} delimiters]"
-        expected_delimiters = ['(', ')', '[', '{', '}', ']']
-        found_matches = get_matches_from_line(number=0, line=line_text)
-        found_delimiters, _ = zip(*found_matches)
-
-        self.assertEqual(expected_delimiters, list(found_delimiters))
-
-    def test_found_matches_contains_line_number(self):
-        line_text = "A (short) text [with {many} delimiters]"
-        found_matches = get_matches_from_line(number=4, line=line_text)
-        _, found_linenumbers = zip(*found_matches)
-
-        self.assertTrue(all(number == 4 for number in found_linenumbers))
-
-
 class TestStackMatching(unittest.TestCase):
     def test_empty_stack_returns_false(self):
         self.assertFalse(matches_top_of_stack('(', []))

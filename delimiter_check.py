@@ -31,10 +31,24 @@ Match = Tuple[str, int]
 
 
 def is_valid_delimiter(delimiter: str) -> bool:
+    """
+    Check for a given string if it is present in the list of all delimiters.
+
+    >>> is_valid_delimiter('(')
+    True
+    """
     return delimiter in ALL_DELIMITERS
 
 
 def get_matches_from_line(number: int, line: str) -> List[Match]:
+    """
+    Loop through the given line of text in search of delimiters.
+    
+    >>> get_matches_from_line(0, '')
+    []
+    >>> get_matches_from_line(1, 'A (short) text [with {many} delimiters]')
+    [('(', 1), (')', 1), ('[', 1), ('{', 1), ('}', 1), (']', 1)]
+    """
     matches = re.findall("|".join(DELIMITER_REGEX), line)
     if matches:
         return [(match, number) for match in matches]
@@ -44,7 +58,7 @@ def get_matches_from_line(number: int, line: str) -> List[Match]:
 def delimiters_match(left: str, right: str) -> bool:
     """
     Check whether two delimiters match.
-    
+
     >>> delimiters_match('[', ']')
     True
     >>> delimiters_match(']', '[')
