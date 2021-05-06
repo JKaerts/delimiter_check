@@ -51,12 +51,9 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 
-def main(argv, stdin, stdout):
+def get_results_from_file(filename):
     delimiters = []  # type: List[Match]
-    input_file = argv[1] if len(argv) > 1 else stdin
-    
-
-    with open(input_file) as infile:
+    with open(filename) as infile:
         # line numbers start at 1, not at zero
         for i, line in enumerate(infile, 1):
             new_matches = get_matches_from_line(i, line)
@@ -66,15 +63,25 @@ def main(argv, stdin, stdout):
                 else:
                     delimiters.append(match)
 
+    return delimiters
+
+
+def write_results(delimiters, outfile):
     for match in delimiters:
         if match[0] in LEFT_DELIMITERS:
             print(
                 "Line {}: {} unclosed".format(match[1], match[0]),
-                file=stdout)
+                file=outfile)
         else:
             print(
                 "Line {}: {} extra".format(match[1], match[0]),
-                file=stdout)
+                file=outfile)
+
+
+def main(argv, stdin, stdout):
+    input_file = argv[1] if len(argv) > 1 else stdin
+    delimiters = get_results_from_file(input_file)
+    write_results(delimiters, stdout)
 
 
 if __name__ == "__main__":
