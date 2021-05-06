@@ -41,7 +41,7 @@ class CustomFormatter(argparse.RawDescriptionHelpFormatter,
     pass
 
 
-def parse_args(args=sys.argv[1:]):
+def parse_args(args):
     """Parse arguments"""
     parser = argparse.ArgumentParser(
         description=sys.modules[__name__].__doc__,
@@ -74,12 +74,12 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 
-def main():
+def main(argv, stdin, stdout):
     delimiters = []  # type: List[Match]
-    args = parse_args()
+    args = parse_args(argv[1:])
     input_file = args.input_file
 
-    with open(input_file) if input_file is not None else sys.stdin as infile:
+    with open(input_file) if input_file is not None else stdin as infile:
         # line numbers start at 1, not at zero
         for i, line in enumerate(infile, 1):
             new_matches = get_matches_from_line(i, line)
@@ -91,10 +91,14 @@ def main():
 
     for match in delimiters:
         if match[0] in LEFT_DELIMITERS:
-            print("Line {}: {} unclosed".format(match[1], match[0]))
+            print(
+                "Line {}: {} unclosed".format(match[1], match[0]),
+                file=stdout)
         else:
-            print("Line {}: {} extra".format(match[1], match[0]))
+            print(
+                "Line {}: {} extra".format(match[1], match[0]),
+                file=stdout)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv, sys.stdin, sys.stdout)
