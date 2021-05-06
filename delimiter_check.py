@@ -74,7 +74,7 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 
-if __name__ == "__main__":
+def main():
     delimiters = []  # type: List[Match]
     args = parse_args()
     input_file = args.input_file
@@ -94,3 +94,7 @@ if __name__ == "__main__":
             print("Line {}: {} unclosed".format(match[1], match[0]))
         else:
             print("Line {}: {} extra".format(match[1], match[0]))
+
+
+if __name__ == "__main__":
+    main()
