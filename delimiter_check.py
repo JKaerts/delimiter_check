@@ -76,10 +76,12 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
 
 def main(argv, stdin, stdout):
     delimiters = []  # type: List[Match]
-    args = parse_args(argv[1:])
-    input_file = args.input_file
+    if len(argv) > 1:
+        input_file = argv[1]
+    else:
+        input_file = stdin
 
-    with open(input_file) if input_file is not None else stdin as infile:
+    with open(input_file) as infile:
         # line numbers start at 1, not at zero
         for i, line in enumerate(infile, 1):
             new_matches = get_matches_from_line(i, line)

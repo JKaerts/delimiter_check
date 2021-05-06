@@ -28,7 +28,7 @@ This script helps with that task.
 In a command line, simply enter
 
 ```
-python delimiter_check.py -i textfile.txt
+python delimiter_check.py textfile.txt
 ```
 
 Supposing the text file contained
