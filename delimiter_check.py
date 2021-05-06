@@ -17,9 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import argparse
 import re
-import sys
 from typing import List, Tuple
 
 DEFAULT_DELIMITERS = [('(', ')'),
@@ -31,27 +29,6 @@ ALL_DELIMITERS = LEFT_DELIMITERS + RIGHT_DELIMITERS
 DELIMITER_REGEX = [re.escape(delimiter) for delimiter in ALL_DELIMITERS]
 
 Match = Tuple[str, int]
-
-
-class CustomFormatter(argparse.RawDescriptionHelpFormatter,
-                      argparse.ArgumentDefaultsHelpFormatter):
-    """
-    Formatter for the command line arguments
-    """
-    pass
-
-
-def parse_args(args):
-    """Parse arguments"""
-    parser = argparse.ArgumentParser(
-        description=sys.modules[__name__].__doc__,
-        formatter_class=CustomFormatter)
-    parser.add_argument("-i",
-                        metavar="INPUT",
-                        dest='input_file',
-                        help="the input file. Defaults to stdin if not given.")
-
-    return parser.parse_args(args)
 
 
 def get_matches_from_line(number: int, line: str) -> List[Match]:
@@ -76,10 +53,8 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
 
 def main(argv, stdin, stdout):
     delimiters = []  # type: List[Match]
-    if len(argv) > 1:
-        input_file = argv[1]
-    else:
-        input_file = stdin
+    input_file = argv[1] if len(argv) > 1 else stdin
+    
 
     with open(input_file) as infile:
         # line numbers start at 1, not at zero
@@ -103,4 +78,9 @@ def main(argv, stdin, stdout):
 
 
 if __name__ == "__main__":
-    main(sys.argv, sys.stdin, sys.stdout)
+    def _script_io():
+        from sys import argv, stdin, stdout
+
+        main(argv, stdin, stdout)
+
+    _script_io()
