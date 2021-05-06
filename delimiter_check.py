@@ -78,16 +78,16 @@ def write_results(delimiters, outfile):
                 file=outfile)
 
 
-def main(argv, stdin, stdout):
-    input_file = argv[1] if len(argv) > 1 else stdin
+def main(argv, stdout):
+    input_file = argv[1]
     delimiters = get_results_from_file(input_file)
     write_results(delimiters, stdout)
 
 
 if __name__ == "__main__":
     def _script_io():
-        from sys import argv, stdin, stdout
+        from sys import argv, stdout
 
-        main(argv, stdin, stdout)
+        main(argv, stdout)
 
     _script_io()
