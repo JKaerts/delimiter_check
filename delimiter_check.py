@@ -75,6 +75,17 @@ def delimiters_match(left: str, right: str) -> bool:
 
 
 def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
+    """
+    Check if a given delimiter cancels out the top of the given list.
+
+    >>> matches_top_of_stack('(', [])
+    False
+    >>> stack = [(']', 1), ('(', 4)]
+    >>> matches_top_of_stack(')', stack)
+    True
+    >>> matches_top_of_stack('[', stack)
+    False
+    """
     return len(stack) != 0 and delimiters_match(stack[-1][0], delimiter)
 
 
