@@ -84,4 +84,23 @@ DEFAULT_DELIMITERS = [(r'(', r')'),
 
 ```
 
-The use of raw strings is simply to make it less painful to get LaTeX-commands right
+The use of raw strings is simply to make it less painful to get LaTeX-commands right.
+
+## About the development and testing of this script
+
+The script is mainly tested using doctests in the script itself and (a few)
+legacy unit tests located in `test_delimiter_check.py`. This file is due to
+be deleted soon.
+
+In addition there is also a stress test located in `stresstest.py`. This script
+will create a file on disk consisting of 100,000 lines of 80 characters each.
+It will then time how long it will take to extract all the 'wrong' delimiters
+from this file and display the result.
+
+During development I do my best to pass all these checks:
+- type checks using mypy,
+- style checks using `pycodestyle` and `pydocstyle`,
+- catching low hanging bug-fruit with `pyflakes`,
+- more advanced styling issues with `pylint` (if I have time).
+
+These checks are in no way a guarantee for quality but they help me be uniform.
