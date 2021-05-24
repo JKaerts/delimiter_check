@@ -90,6 +90,20 @@ def matches_top_of_stack(delimiter: str, stack: List[Match]) -> bool:
 
 
 def get_results_from_file(file):
+    """
+    Read a file and returns nonmatching delimiters with their line numbers.
+
+    >>> from io import StringIO
+    >>> file = StringIO('''[a
+    ... (b
+    ... {c
+    ... }d
+    ... )e
+    ... (f
+    ... ]g''')
+    >>> get_results_from_file(file)
+    [('[', 1), ('(', 6), (']', 7)]
+    """
     delimiters = []  # type: List[Match]
     # line numbers start at 1, not at zero
     for i, line in enumerate(file, 1):
