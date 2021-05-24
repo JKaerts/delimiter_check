@@ -43,7 +43,7 @@ def is_valid_delimiter(delimiter: str) -> bool:
 def get_matches_from_line(number: int, line: str) -> List[Match]:
     """
     Loop through the given line of text in search of delimiters.
-    
+
     >>> get_matches_from_line(0, '')
     []
     >>> get_matches_from_line(1, 'A (short) text [with {many} delimiters]')
