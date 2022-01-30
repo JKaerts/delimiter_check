@@ -1,7 +1,7 @@
 """Tests for the delimiter_check script"""
 import unittest
 
-from delimiter_check import matches_top_of_stack
+from delimiter_check.delimiter_check import matches_top_of_stack
 
 
 class TestStackMatching(unittest.TestCase):

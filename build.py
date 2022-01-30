@@ -20,8 +20,8 @@ arg = sys.argv[1]
 if arg == 'help':
     show_help()
 elif arg == 'test':
-    subprocess.run(['python', 'test_delimiter_check.py'])
+    subprocess.run(['python', '-m', 'unittest', 'discover', '-v'])
 elif arg == 'typecheck':
-    subprocess.run(['mypy', 'delimiter_check.py'])
+    subprocess.run(['mypy', 'delimiter_check'])
 elif arg == 'stylecheck':
     subprocess.run(['pycodestyle', '.'])
