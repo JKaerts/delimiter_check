@@ -1,21 +1,19 @@
-help:
-	@echo 'Possible targets:'
-	@echo 'help'
-	@echo 'env'
-	@echo 'test'
-	@echo 'test-verbose'
-	@echo 'typecheck'
-	@echo 'codestyle'
-	@echo 'docstyle'
+# Possible targets:
+# - env              Create a virtual environment
+# - dep              Install all dependencies
+# - test             Run the test suite
+# - typecheck        Analyze the code with mypy
+# - codestyle        Analyze the code with pycodestyle
+# - docstyle         Analyze the code with pydocstyle
 
 env:
 	python -m venv "venv"
 
+dep:
+	pip install -r requirements.txt
+
 test:
 	python -m unittest discover
-
-test-verbose:
-	python -m unittest discover -v
 
 typecheck:
 	mypy delimiter_check
@@ -25,4 +23,3 @@ codestyle:
 
 docstyle:
 	pydocstyle delimiter_check
-	
