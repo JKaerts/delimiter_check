@@ -38,6 +38,18 @@ dependencies, you can activate the virtual environment and install them with
 make dep
 ```
 
+To build the wheel file, run
+
+```
+python -m build
+```
+
+in an activated environment. Finally install the wheel file with
+
+```
+pip install dist/<wheel_file>.whl
+```
+
 ## Usage
 
 From the root folder of the project, execute
