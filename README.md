@@ -23,15 +23,30 @@ Using these macros you can abstract these common use cases away.
 But then you still need a way to check if you've truly removed these special cases.
 This script helps with that task.
 
+## Setup
+
+Prepare a virtual environment through
+
+```
+make env
+```
+
+This should be enough to run the program. If you require the development
+dependencies, you can activate the virtual environment and install them with
+
+```
+make dep
+```
+
 ## Usage
 
-In a command line, simply enter
+From the root folder of the project, execute
 
 ```
-python delimiter_check.py textfile.txt
-```
+.\venv\Scripts\python.exe -m delimiter_check <input_file>
+``` 
 
-Supposing the text file contained
+Supposing an input text file contained
 
 ```
 [a
