@@ -1,6 +1,5 @@
 # Possible targets:
 # - env              Create a virtual environment
-# - dep              Install all dependencies
 # - test             Run the test suite
 # - typecheck        Analyze the code with mypy
 # - codestyle        Analyze the code with pycodestyle
@@ -24,8 +23,10 @@ test: $(ACTIVATE)
 typecheck: $(ACTIVATE)
 	$(SCRIPTS)\mypy.exe delimiter_check
 
-codestyle: $(ACTIVATE)
+analysis: $(ACTIVATE)
 	$(SCRIPTS)\pycodestyle.exe delimiter_check
-
-docstyle: $(ACTIVATE)
 	$(SCRIPTS)\pydocstyle.exe delimiter_check
+
+wheel: $(ACTIVATE)
+	$(PYTHON) -m build
+
