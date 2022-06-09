@@ -6,20 +6,26 @@
 # - codestyle        Analyze the code with pycodestyle
 # - docstyle         Analyze the code with pydocstyle
 
-env:
+VENV = venv
+SCRIPTS = $(VENV)\Scripts
+ACTIVATE = $(VENV)\Scripts\Activate.ps1
+PYTHON = $(VENV)\Scripts\python.exe
+PIP = $(VENV)\Scripts\pip.exe
+
+env: $(ACTIVATE)
+
+$(ACTIVATE): requirements.txt
 	python -m venv "venv"
+	$(PIP) install -r requirements.txt
 
-dep:
-	pip install -r requirements.txt
+test: $(ACTIVATE)
+	$(PYTHON) -m unittest discover
 
-test:
-	python -m unittest discover
+typecheck: $(ACTIVATE)
+	$(SCRIPTS)\mypy.exe delimiter_check
 
-typecheck:
-	mypy delimiter_check
+codestyle: $(ACTIVATE)
+	$(SCRIPTS)\pycodestyle.exe delimiter_check
 
-codestyle:
-	pycodestyle delimiter_check
-
-docstyle:
-	pydocstyle delimiter_check
+docstyle: $(ACTIVATE)
+	$(SCRIPTS)\pydocstyle.exe delimiter_check
