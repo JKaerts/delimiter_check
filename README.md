@@ -25,23 +25,16 @@ This script helps with that task.
 
 ## Setup
 
-Prepare a virtual environment through
+Prepare a virtual environment with all included dependencies with
 
 ```
 make env
 ```
 
-This should be enough to run the program. If you require the development
-dependencies, you can activate the virtual environment and install them with
-
-```
-make dep
-```
-
 To build the wheel file, run
 
 ```
-python -m build
+make wheel
 ```
 
 in an activated environment. Finally install the wheel file with

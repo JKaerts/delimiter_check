@@ -10,7 +10,9 @@ SCRIPTS = $(VENV)\Scripts
 ACTIVATE = $(VENV)\Scripts\Activate.ps1
 PYTHON = $(VENV)\Scripts\python.exe
 PIP = $(VENV)\Scripts\pip.exe
+delete = IF EXIST $(1) (rd /s /q $(1))
 
+# 'env' is an easy to type alias for the activate script
 env: $(ACTIVATE)
 
 $(ACTIVATE): requirements.txt
@@ -30,3 +32,8 @@ analysis: $(ACTIVATE)
 wheel: $(ACTIVATE)
 	$(PYTHON) -m build
 
+clean:
+	$(call delete, .mypy_cache)
+	$(call delete, delimiter_check.egg-info)
+	$(call delete, dist)
+	$(call delete, venv)
