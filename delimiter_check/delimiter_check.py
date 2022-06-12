@@ -120,6 +120,7 @@ def get_results_from_file(file):
 
 
 def write_results(delimiters, outfile):
+    """Write the interpreted results of the program to outfile."""
     for match in delimiters:
         if match[0] in LEFT_DELIMITERS:
             print(
@@ -132,6 +133,7 @@ def write_results(delimiters, outfile):
 
 
 def main(argv, stdout):
+    """Run the program."""
     input_file = argv[1]
     with open(input_file) as infile:
         delimiters = get_results_from_file(infile)
