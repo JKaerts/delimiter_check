@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Jonas Kaerts
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 # Possible targets:
 # - env              Create a virtual environment
 # - test             Run the test suite

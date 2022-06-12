@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Jonas Kaerts
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 """Tests for the delimiter_check script"""
 import unittest
 

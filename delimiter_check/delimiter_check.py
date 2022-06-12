@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-only
+
 """A program to check for delimiter consistency in text files.
 
 Copyright (C) 2018  Jonas Kaerts
