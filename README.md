@@ -29,25 +29,71 @@ Using these macros you can abstract these common use cases away.
 But then you still need a way to check if you've truly removed these special cases.
 This script helps with that task.
 
-## Setup
+## Development setup
 
-Prepare a virtual environment with all included dependencies with
-
-```
-make env
-```
-
-To build the wheel file, run
+All development takes place inside a virtual environment. Create this
+environment in a new map `venv `by executing
 
 ```
-make wheel
+python -m venv "venv"
 ```
 
-in an activated environment. Finally install the wheel file with
+in the root folder of the project. Activate the virtual environment on
+Windows by executing
 
 ```
-pip install dist/<wheel_file>.whl
+.\venv\Scripts\Activate.ps1
 ```
+
+again in the root folder of the project. Linux or Mac systems will need a
+different command to activate the virtual environment.
+
+Once the environment is activated, install all required packages by executing
+
+```
+pip install -r requirements.txt
+```
+
+in the root folder of the project.
+
+## Development
+
+This section requires you to be working in an activated virtual environment
+with all dependencies installed. If you followed the instructions in the
+previous section, you will be fine.
+
+I take care to make all my source files pass the checks in the commands `mypy`,
+`pycodestyle` and `pydocstyle`. Execute any of the following three commands to
+run the specific checks:
+
+```
+mypy delimiter_check
+pycodestyle delimiter_check
+pydocstyle delimiter_check
+```
+
+You can run all unit tests by executing
+
+```
+python -m unittest discover
+```
+
+Finally, you can build a wheel file with
+
+```
+python -m build
+```
+
+The generated wheel file can be found in the `dist` directory.
+
+## Cleanup
+
+It is safe to delete the follwoing files/folders after you are don working
+
+- `.mypy_cache`
+- `delimiter_check.egg-info`
+- `dist`
+- `venv`
 
 ## Usage
 
@@ -93,40 +139,3 @@ Similar commands `\lparen` and `\rparen` exist in the package `mathtools`.
 This package extends the classic `amsmath` and is now something I load by default.
 Using these six commands with a package like `enumitem` allows you to elegantly solve the problem of numbered lists.
 You can also define your own macro's for intervals etc.
-
-## How do I extend the rules of the script?
-
-It is possible to add your own set of delimiters to the program.
-To do so you need to edit the code in one place.
-Suppose I want the script to also check if every `\langle` has a matching `\rangle`.
-To this end I need to add them to `DEFAULT_DELIMITERS` (which matches opening delimiters to their closing counterpart).
-It will now look like this:
-
-```
-DEFAULT_DELIMITERS = [(r'(', r')'),
-                      (r'{', r'}'),
-                      (r'[', r']'),
-					  (r'\langle', r'\rangle')]
-
-```
-
-The use of raw strings is simply to make it less painful to get LaTeX-commands right.
-
-## About the development and testing of this script
-
-The script is mainly tested using doctests in the script itself and (a few)
-legacy unit tests located in `test_delimiter_check.py`. This file is due to
-be deleted soon.
-
-In addition there is also a stress test located in `stresstest.py`. This script
-will create a file on disk consisting of 100,000 lines of 80 characters each.
-It will then time how long it will take to extract all the 'wrong' delimiters
-from this file and display the result.
-
-During development I do my best to pass all these checks:
-- type checks using mypy,
-- style checks using `pycodestyle` and `pydocstyle`,
-- catching low hanging bug-fruit with `pyflakes`,
-- more advanced styling issues with `pylint` (if I have time).
-
-These checks are in no way a guarantee for quality but they help me be uniform.
