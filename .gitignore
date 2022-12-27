@@ -5,3 +5,6 @@
 .mypy_cache
 __pycache__
 venv
+delimiter_check.egg-info
+dist
+
