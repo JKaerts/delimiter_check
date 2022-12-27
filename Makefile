@@ -21,9 +21,10 @@ deletefolder = IF EXIST $(1) (rd /s /q $(1))
 # 'env' is an easy to type alias for the activate script
 env: $(ACTIVATE)
 
-$(ACTIVATE): requirements.txt
+$(ACTIVATE):
 	python -m venv "venv"
-	$(PIP) install -r requirements.txt
+	$(PYTHON) -m pip install --upgrade pip-tools
+	$(PYTHON) -m pip install -r requirements.txt
 
 test: $(ACTIVATE)
 	$(PYTHON) -m unittest discover
