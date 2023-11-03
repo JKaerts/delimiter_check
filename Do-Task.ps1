@@ -1,6 +1,6 @@
 # Complete build script for the project
 param(
-	[switch]$Full = $false,
+	[switch]$Build = $false,
 	[switch]$Test = $false,
 	[switch]$Analysis = $false,
 	[switch]$Clean = $false
@@ -9,12 +9,8 @@ param(
 $VenvPython = ".\venv\Scripts\python.exe"
 $VenvBin = ".\venv\Scripts"
 
-function Do-FullBuild {
-	Do-Cleanup
-	python -m venv venv
-	Invoke-Expression "$VenvPython -m pip install --upgrade pip-tools"
-	Invoke-Expression "$VenvPython -m pip install -r requirements.txt"
-	Invoke-Expression "$VenvPython -m build"
+function Do-Build {
+	.\Build-Project.ps1
 }
 
 function Do-Test {
@@ -33,7 +29,7 @@ function Do-Analysis {
 	Invoke-Expression "$VenvBin\pydocstyle.exe delimiter_check"
 }
 
-function Do-Cleanup {
+function Do-Clean {
 	if (Test-Path ".\venv") {
 		Remove-Item ".\venv" -Recurse
 	}
@@ -48,8 +44,8 @@ function Do-Cleanup {
 	}
 }
 
-if ($Full) {
-	Do-FullBuild
+if ($Build) {
+	Do-Build
 }
 
 if ($Test) {
@@ -61,5 +57,5 @@ if ($Analysis) {
 }
 
 if ($Clean) {
-	Do-Cleanup
+	Do-Clean
 }
