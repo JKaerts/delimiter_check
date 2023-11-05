@@ -7,5 +7,5 @@ build==0.7.0
 
 # Static analysis tools
 mypy==0.931
-pycodestyle==2.8.0
+pylint
 pydocstyle==6.1.1
